@@ -14,7 +14,7 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user:
         return
-    if message.content.startswith('!'):
+    if message.content.startswith(settings["command_prefix"]):
         if message.content[1:].startswith('gen_pass'):
             try:
                 pass_length = int(message.content.split()[1])
