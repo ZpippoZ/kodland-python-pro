@@ -1,5 +1,5 @@
 import discord
-from bot_logic import gen_pass
+from bot_logic import gen_pass, flip_a_coin, random_emoji
 from settings import settings
 
 intents = discord.Intents.default()
@@ -26,6 +26,10 @@ async def on_message(message):
                 return
             pw = gen_pass(pass_length)
             await message.channel.send(f'Length: {len(pw)}      Password: {pw}')
+        elif message.content[1:].startswith('flip a coin'):
+            await message.channel.send(flip_a_coin)
+        elif message.content[1:].startswith('random emoji'):
+            await message.channel.send(random_emoji)
         else:
             await message.channel.send(f'Unknown command')
 
