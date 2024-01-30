@@ -1,36 +1,26 @@
 import discord
+from discord.ext import commands
 from bot_logic import gen_pass, flip_a_coin, random_emoji
 from settings import settings
 
 intents = discord.Intents.default()
 intents.message_content = True
-client = discord.Client(intents=intents)
 
-@client.event
+bot = commands.Bot(command_prefix=settings["command_prefix"], intents=intents)
+
+@bot.event
 async def on_ready():
-    print(f'Started as {client.user}')
+    print(f'Started as {bot.user}')
 
-@client.event
-async def on_message(message):
-    if message.author == client.user:
+@bot.command()
+async def password(ctx, pass_length):
+    try:
+        pass_length = int(pass_length)
+    except ValueError:
+        await ctx.send("Input a valid integer")
         return
-    if message.content.startswith(settings["command_prefix"]):
-        if message.content[1:].startswith('gen_pass'):
-            try:
-                pass_length = int(message.content.split()[1])
-            except IndexError:
-                await message.channel.send(f'Specify the password length')
-                return
-            except ValueError:
-                await message.channel.send(f'Input a valid integer')
-                return
-            pw = gen_pass(pass_length)
-            await message.channel.send(f'Length: {len(pw)}      Password: {pw}')
-        elif message.content[1:].startswith('flip a coin'):
-            await message.channel.send(flip_a_coin)
-        elif message.content[1:].startswith('random emoji'):
-            await message.channel.send(random_emoji)
-        else:
-            await message.channel.send(f'Unknown command')
+    if pass_length < 1:
+        await ctx.send("Input an integer greater than 0")
+    await ctx.send(gen_pass(pass_length))
 
-client.run(settings["token"])
+bot.run(settings["token"])
