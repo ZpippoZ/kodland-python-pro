@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from bot_logic import gen_pass, flip_a_coin, random_emoji
+from bot_logic import gen_pass, flip_a_coin, random_emoji, command_list
 from settings import settings
 
 intents = discord.Intents.default()
@@ -13,6 +13,17 @@ async def on_ready():
     print(f'Started as {bot.user}')
 
 @bot.command()
+async def list(ctx):
+    commands = command_list()
+    output='```'
+    output+=f'Command prefix: {settings["command_prefix"]}\n'
+    output+=f'Command list:\n'
+    for i in range(len(commands)):
+        output+=f' -{commands[i]}\n'
+    output+='```'
+    await ctx.send(output)
+
+@bot.command()
 async def password(ctx, pass_length):
     try:
         pass_length = int(pass_length)
@@ -22,5 +33,13 @@ async def password(ctx, pass_length):
     if pass_length < 1:
         await ctx.send("Input an integer greater than 0")
     await ctx.send(gen_pass(pass_length))
+
+@bot.command()
+async def flip_coin(ctx):
+    await ctx.send(flip_a_coin())
+
+@bot.command()
+async def emoji(ctx):
+    await ctx.send(random_emoji())
 
 bot.run(settings["token"])
