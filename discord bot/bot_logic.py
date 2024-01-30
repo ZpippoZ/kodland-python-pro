@@ -36,3 +36,13 @@ emoji_dict = [
 
 def random_emoji():
     return choice(emoji_dict)
+
+commands = [
+    "list",
+    "password",
+    "flip_coin",
+    "emoji"
+    ]
+
+def command_list():
+    return commands
