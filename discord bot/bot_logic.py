@@ -41,8 +41,24 @@ commands = [
     "list",
     "password",
     "flip_coin",
-    "emoji"
+    "emoji",
+    "d2h",
+    "h2d",
+    "d2b",
+    "b2d"
     ]
 
 def command_list():
     return commands
+
+def dec2hex(value):
+    return hex(int(value))[2::].upper()
+
+def hex2dec(value):
+    return int(str(value),base=16)
+
+def dec2bin(value):
+    return bin(int(value))[2::]
+
+def bin2dec(value):
+    return int(str(value), base=2)
