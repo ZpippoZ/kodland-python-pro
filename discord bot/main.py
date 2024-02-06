@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from bot_logic import gen_pass, flip_a_coin, random_emoji, command_list
+from bot_logic import command_list, gen_pass, flip_a_coin, random_emoji, dec2hex, hex2dec, dec2bin, bin2dec
 from settings import settings
 
 intents = discord.Intents.default()
@@ -41,5 +41,21 @@ async def flip_coin(ctx):
 @bot.command()
 async def emoji(ctx):
     await ctx.send(random_emoji())
+
+@bot.command()
+async def d2h(ctx, value):
+    await ctx.send(dec2hex(value))
+    
+@bot.command()
+async def h2d(ctx, value):
+    await ctx.send(hex2dec(value))
+    
+@bot.command()
+async def d2b(ctx, value):
+    await ctx.send(dec2bin(value))
+    
+@bot.command()
+async def b2d(ctx, value):
+    await ctx.send(bin2dec(value))
 
 bot.run(settings["token"])
